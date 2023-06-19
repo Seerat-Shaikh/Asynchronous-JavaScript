@@ -58,7 +58,7 @@ getTodos('todos/luigi.json', (err, data) => {
 });*/
 
 // === Promises ===
-const getTodos = (resource) => {
+/*const getTodos = (resource) => {
   return new Promise((resolve, reject) => {
     const request = new XMLHttpRequest();
 
@@ -74,10 +74,10 @@ const getTodos = (resource) => {
     request.open("GET", resource);
     request.send();
   });
-};
+};*/
 
 // === Chaining Promises ===
-getTodos('todos/luigi.json').then(data => {
+/*getTodos('todos/luigi.json').then(data => {
   console.log('promise 1 resolved:', data);
   return getTodos('todos/mario.json');
 }).then(data => {
@@ -87,4 +87,35 @@ getTodos('todos/luigi.json').then(data => {
   console.log('promise 3 resolved:', data);
 }).catch((err) => {
   console.log('promise rejected:', err);
-});
+});*/
+
+
+// === Fetch api ===
+//It is use when we make network requests it will not reject request it will show resolved on console but in status it will show 404
+/*fetch('todos/luigi.json').then((response) => {
+  console.log('resolved', response);
+  return response.json(); //we will take response to json which will return promise after fetching data 
+}).then(data => {
+  console.log(data);
+}).catch((err) => {
+  console.log('rejected', err);
+});*/
+
+
+// === Async & await ===
+const getTodos = async () => {
+  const response =  await fetch('todos/luigi.json');
+
+  if(response.status !== 200){
+    throw new Error('cannot fetch the data');
+  }
+
+  const data =  await response.json();
+
+  return data;
+
+};
+
+getTodos()
+  .then(data => console.log('resolved:', data))
+  .catch(err => console.log('rejected:', err.message));
